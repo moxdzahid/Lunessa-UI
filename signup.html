@@ -1,353 +1,1328 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lunessa - Sign Up</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background-color: #f4f4f5;
+        color: #18181b;
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        background: #f4f4f5;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+      .liquid-header {
+        position: relative;
+        text-align: center;
+        background: #f4f4f5;
+        overflow: hidden;
+        padding-bottom: 1rem;
+      }
+      #waveCanvas {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 120px;
+        display: block;
+      }
+      .header-container {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .logo-svg {
+        width: 280px;
+        height: auto;
+        margin-bottom: 0.5rem;
+      }
+      .logo-text {
+        font-size: 28px;
+        font-weight: 700;
+        fill: #18181b;
+        letter-spacing: 1.5px;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      /* Enhanced Navigation Styles */
+      nav {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        align-items: center;
+        backdrop-filter: blur(8px);
+        border-radius: 50px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        max-width: 90%;
+      }
+
+      nav a {
+        color: #4b5563;
+        text-decoration: none;
+        font-weight: 500;
+        position: relative;
+        font-size: 0.95rem;
+        padding: 0.5rem 0.3rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      nav a:not(.liquid-cta):hover {
+        color: #7c3aed;
+        transform: translateY(-1px);
+      }
+
+      nav a::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #8b5cf6;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      }
+
+      nav a:hover::before {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
+      /* CTA Button Styles */
+      .liquid-cta {
+        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        color: white !important;
+        padding: 0.6rem 1.8rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        box-shadow: 0 2px 5px rgba(139, 92, 246, 0.2);
+        margin-left: 0.5rem;
+      }
+
+      .liquid-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+      }
+
+      /* Remove underline effect for CTA */
+      nav a.liquid-cta::before {
+        display: none;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 640px) {
+        nav {
+          gap: 1rem;
+          padding: 0.5rem;
         }
-        
-        body {
-            background-color: #F4F4F5;
-            color: #18181B;
-            min-height: 100vh;
-            display: grid;
-            grid-template-rows: auto 1fr auto;
+        .liquid-cta {
+          padding: 0.5rem 1.2rem;
+          margin-left: 0;
         }
-        
-        header {
-            background-color: #18181B;
-            padding: 24px 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #8B5CF6;
-            letter-spacing: -0.5px;
-        }
-        
-        .container {
-            display: grid;
-            grid-template-columns: 1fr;
-            align-content: center;
-            padding: 2rem;
-        }
-        
+      }
+
+      .logo {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #8b5cf6;
+        letter-spacing: -0.5px;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-content: center;
+        padding: 0.9rem;
+      }
+
+      .form-container {
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        max-width: 1500px;
+        margin: 0 auto;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .form-hero {
+        background: linear-gradient(
+          135deg,
+          rgba(139, 92, 246, 0.1) 0%,
+          rgba(139, 92, 246, 0.05) 100%
+        );
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .form-hero::after {
+        content: "";
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(139, 92, 246, 0.08);
+      }
+
+      .form-hero::before {
+        content: "";
+        position: absolute;
+        bottom: -80px;
+        left: -30px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(139, 92, 246, 0.05);
+      }
+
+      .hero-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #18181b;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-text {
+        color: #71717a;
+        line-height: 1.6;
+        position: relative;
+        z-index: 1;
+      }
+
+      .form-content {
+        padding: 3rem;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-group.full-width {
+        grid-column: span 2;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: #3f3f46;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e4e4e7;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+        background-color: #fafafa;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        background-color: white;
+      }
+
+      .optional {
+        color: #a1a1aa;
+        font-size: 0.75rem;
+      }
+
+      .button-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      button {
+        padding: 0.75rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .primary-btn {
+        background-color: #8b5cf6;
+        color: white;
+      }
+
+      .primary-btn:hover {
+        background-color: #7c3aed;
+        transform: translateY(-1px);
+      }
+
+      .secondary-btn {
+        background-color: #f4f4f5;
+        color: #18181b;
+        border: 1px solid #e4e4e7;
+      }
+
+      .secondary-btn:hover {
+        background-color: #e4e4e7;
+        transform: translateY(-1px);
+      }
+
+      .text-center {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: #71717a;
+        font-size: 0.875rem;
+      }
+
+      .text-center a {
+        color: #8b5cf6;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .text-center a:hover {
+        text-decoration: underline;
+      }
+
+      footer {
+        background-color: #18181b;
+        color: #f4f4f5;
+        text-align: center;
+        padding: 1.5rem;
+        font-size: 0.875rem;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .copyright {
+        color: #a1a1aa;
+      }
+
+      /* Country code dropdown styles */
+      .phone-input-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .country-code-selector {
+        position: relative;
+        width: 80px;
+      }
+      #selected-country-flag {
+        position: relative;
+        bottom: 2px;
+      }
+      .country-code-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e4e4e7;
+        border-radius: 8px;
+        background-color: #fafafa;
+        cursor: pointer;
+        font-size: 0.875rem;
+      }
+
+      .country-code-toggle:hover {
+        background-color: #f4f4f5;
+      }
+
+      .country-code-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 300px;
+        background-color: white;
+        border: 1px solid #e4e4e7;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        display: none;
+        max-height: 300px;
+        overflow: hidden;
+      }
+
+      .country-code-dropdown.show {
+        display: block;
+      }
+
+      .country-search {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e4e4e7;
+      }
+
+      .country-search input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e4e4e7;
+        border-radius: 4px;
+        font-size: 0.875rem;
+      }
+
+      .country-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 250px;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+      }
+
+      .country-list::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .country-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      .country-list::-webkit-scrollbar-thumb {
+        background: #c4c4c4;
+        border-radius: 3px;
+      }
+
+      .country-list::-webkit-scrollbar-thumb:hover {
+        background: #8b5cf6;
+      }
+
+      .country-item {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .country-item:hover {
+        background-color: #f4f4f5;
+      }
+
+      .country-item.active {
+        background-color: #ede9fe;
+      }
+
+      .country-flag {
+        width: 20px;
+        height: 25px;
+        object-fit: cover;
+      }
+
+      .country-name {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .country-code {
+        color: #71717a;
+        font-size: 0.75rem;
+      }
+
+      .phone-input {
+        flex: 1;
+      }
+
+      @media (max-width: 768px) {
         .form-container {
-            background-color: white;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            max-width: 1000px;
-            margin: 0 auto;
-            overflow: hidden;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+          grid-template-columns: 1fr;
         }
-        
+
         .form-hero {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 3rem;
-            position: relative;
-            overflow: hidden;
+          display: none;
         }
-        
-        .form-hero::after {
-            content: "";
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(139, 92, 246, 0.08);
-        }
-        
-        .form-hero::before {
-            content: "";
-            position: absolute;
-            bottom: -80px;
-            left: -30px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(139, 92, 246, 0.05);
-        }
-        
-        .hero-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #18181B;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero-text {
-            color: #71717A;
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .form-content {
-            padding: 3rem;
-        }
-        
+
         .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+          grid-template-columns: 1fr;
         }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
+
         .form-group.full-width {
-            grid-column: span 2;
+          grid-column: span 1;
         }
-        
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.875rem;
-            color: #3F3F46;
+
+        .country-code-dropdown {
+          width: 270px;
         }
-        
-        input, select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #E4E4E7;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-            background-color: #FAFAFA;
-        }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: #8B5CF6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-            background-color: white;
-        }
-        
-        .optional {
-            color: #A1A1AA;
-            font-size: 0.75rem;
-        }
-        
-        .button-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        button {
-            padding: 0.75rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .primary-btn {
-            background-color: #8B5CF6;
-            color: white;
-        }
-        
-        .primary-btn:hover {
-            background-color: #7C3AED;
-            transform: translateY(-1px);
-        }
-        
-        .secondary-btn {
-            background-color: #F4F4F5;
-            color: #18181B;
-            border: 1px solid #E4E4E7;
-        }
-        
-        .secondary-btn:hover {
-            background-color: #E4E4E7;
-            transform: translateY(-1px);
-        }
-        
-        .text-center {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #71717A;
-            font-size: 0.875rem;
-        }
-        
-        .text-center a {
-            color: #8B5CF6;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .text-center a:hover {
-            text-decoration: underline;
-        }
-        
-        footer {
-            background-color: #18181B;
-            color: #F4F4F5;
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.875rem;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .copyright {
-            color: #A1A1AA;
-        }
-        
-        @media (max-width: 768px) {
-            .form-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-hero {
-                display: none;
-            }
-            
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-group.full-width {
-                grid-column: span 1;
-            }
-        }
+      }
+
+      /* Enhanced Nationality Selector Styles */
+      #selected-nationality-flag {
+        position: relative;
+        bottom: 3px;
+      }
+      .nationality-selector {
+        position: relative;
+      }
+
+      .nationality-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e4e4e7;
+        border-radius: 8px;
+        background-color: #fafafa;
+        cursor: pointer;
+        font-size: 0.875rem;
+        width: 100%;
+        text-align: left;
+      }
+
+      .nationality-toggle:hover {
+        background-color: #f4f4f5;
+      }
+
+      .nationality-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        border: 1px solid #e4e4e7;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        display: none;
+        max-height: 300px;
+        overflow: hidden;
+      }
+
+      .nationality-dropdown.show {
+        display: block;
+      }
+
+      .nationality-search {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e4e4e7;
+      }
+
+      .nationality-search input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e4e4e7;
+        border-radius: 4px;
+        font-size: 0.875rem;
+      }
+
+      .nationality-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 250px;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+      }
+
+      .nationality-list::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .nationality-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      .nationality-list::-webkit-scrollbar-thumb {
+        background: #c4c4c4;
+        border-radius: 3px;
+      }
+
+      .nationality-list::-webkit-scrollbar-thumb:hover {
+        background: #8b5cf6;
+      }
+
+      .nationality-item {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .nationality-item:hover {
+        background-color: #f4f4f5;
+      }
+
+      .nationality-item.active {
+        background-color: #ede9fe;
+      }
+
+      .nationality-flag {
+        width: 20px;
+        height: 24px;
+        object-fit: cover;
+      }
+
+      .nationality-name {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .selected-nationality {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      /* Password Input Styles */
+      .password-input-container {
+        position: relative;
+      }
+
+      .password-icons {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 8px;
+      }
+
+      .toggle-password,
+      .copy-password {
+        cursor: pointer;
+        color: #a1a1aa;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+      }
+
+      .toggle-password:hover,
+      .copy-password:hover {
+        color: #8b5cf6;
+      }
+
+      /* Adjust input padding to make room for icons */
+      input[type="password"],
+      input[type="text"] {
+        padding-right: 45px !important;
+      }
+
+      /* For password field with two icons */
+      #password {
+        padding-right: 70px !important;
+      }
     </style>
-</head>
-<body>
-    <header>
-        <div class="logo">Lunessa</div>
+  </head>
+  <body>
+    <header class="liquid-header">
+      <canvas id="waveCanvas"></canvas>
+      <div class="header-container">
+        <svg viewBox="0 0 200 60" class="logo-svg">
+          <path
+            d="M30,30 Q50,0 70,30 T110,30 T150,30 T190,30"
+            stroke="#8B5CF6"
+            fill="none"
+            stroke-width="3"
+          />
+          <text x="100" y="50" text-anchor="middle" class="logo-text">
+            Lunessa
+          </text>
+        </svg>
+        <nav>
+          <a href="#">Discover</a>
+          <a href="#">Integrate</a>
+          <a href="#">Community</a>
+          <a href="login.html" class="liquid-cta">Login Now</a>
+        </nav>
+      </div>
     </header>
-    
+
     <div class="container">
-        <div class="form-container">
-            <div class="form-hero">
-                <h2 class="hero-title">Join Lunessa</h2>
-                <p class="hero-text">Create your account to unlock premium features and start your journey with our platform.</p>
-            </div>
-            
-            <div class="form-content">
-                <form>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" placeholder="Full name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <select id="gender" name="gender" required>
-                                <option value="" disabled selected>Select gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="non-binary">Non-binary</option>
-                                <option value="other">Other</option>
-                                <option value="prefer-not-to-say">Prefer not to say</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+1 (___) ___-____" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="dateofbirth">Date of Birth</label>
-                            <input type="date" id="dateofbirth" name="dateofbirth" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="nationality">Nationality</label>
-                            <select id="nationality" name="nationality" required>
-                                <option value="" disabled selected>Select country</option>
-                                <option value="in">Indian</option>
-                                <option value="us">United States</option>
-                                <option value="uk">United Kingdom</option>
-                                <option value="ca">Canada</option>
-                                <option value="au">Australia</option>
-                                <option value="de">Germany</option>
-                                <option value="fr">France</option>
-                                <option value="jp">Japan</option>
-                                <option value="br">Brazil</option>
-                                <option value="za">South Africa</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group full-width">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username" placeholder="Choose a username" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Create password" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="confirm-password">Confirm Password</label>
-                            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm password" required>
-                        </div>
-                        
-                        <div class="form-group full-width">
-                            <label for="address">Address <span class="optional">(optional)</span></label>
-                            <input type="text" id="address" name="address" placeholder="Street, City, ZIP Code">
-                        </div>
-                    </div>
-                    
-                    <div class="button-group">
-                        <button type="submit" class="primary-btn">Sign Up</button>
-                        <button type="reset" class="secondary-btn">Reset All</button>
-                    </div>
-                    
-                    <div class="text-center">
-                        Already have an account? <a href="login.html">Log in</a>
-                    </div>
-                </form>
-            </div>
+      <div class="form-container">
+        <div class="form-hero">
+          <h2 class="hero-title">Join Lunessa</h2>
+          <p class="hero-text">
+            Create your account to unlock premium features and start your
+            journey with our platform.
+          </p>
         </div>
+
+        <div class="form-content">
+          <form>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Full name"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" required>
+                  <option value="" disabled selected>Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="non-binary">Non-binary</option>
+                  <option value="other">Other</option>
+                  <option value="prefer-not-to-say">Prefer not to say</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="your@email.com"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <div class="phone-input-container">
+                  <div class="country-code-selector">
+                    <div class="country-code-toggle">
+                      <span id="selected-country-flag">🇮🇳</span>
+                      <span id="selected-country-code">+91</span>
+                    </div>
+                    <div class="country-code-dropdown">
+                      <div class="country-search">
+                        <input
+                          type="text"
+                          placeholder="Search country..."
+                          id="country-search"
+                        />
+                      </div>
+                      <ul class="country-list" id="country-list">
+                        <!-- Countries will be populated by JavaScript -->
+                      </ul>
+                    </div>
+                  </div>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="12345 67890"
+                    class="phone-input"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="dateofbirth">Date of Birth</label>
+                <input
+                  type="date"
+                  id="dateofbirth"
+                  name="dateofbirth"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="nationality">Nationality</label>
+                <div class="nationality-selector">
+                  <button
+                    type="button"
+                    class="nationality-toggle"
+                    id="nationality-toggle"
+                  >
+                    <div class="selected-nationality">
+                      <span id="selected-nationality-flag">🇮🇳</span>
+                      <span id="selected-nationality-name">India</span>
+                    </div>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                  <div class="nationality-dropdown" id="nationality-dropdown">
+                    <div class="nationality-search">
+                      <input
+                        type="text"
+                        placeholder="Search country..."
+                        id="nationality-search"
+                      />
+                    </div>
+                    <ul class="nationality-list" id="nationality-list">
+                      <!-- Countries will be populated by JavaScript -->
+                    </ul>
+                  </div>
+                  <input
+                    type="hidden"
+                    id="nationality"
+                    name="nationality"
+                    value="IN"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="username">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Choose a username"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-input-container">
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create password"
+                    required
+                  />
+                  <div class="password-icons">
+                    <span class="toggle-password" data-target="password">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                        ></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    </span>
+                    <span class="copy-password" data-target="password">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <rect
+                          x="9"
+                          y="9"
+                          width="13"
+                          height="13"
+                          rx="2"
+                          ry="2"
+                        ></rect>
+                        <path
+                          d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                        ></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <div class="password-input-container">
+                  <input
+                    type="password"
+                    id="confirm-password"
+                    name="confirm-password"
+                    placeholder="Confirm password"
+                    required
+                  />
+                  <div class="password-icons">
+                    <span
+                      class="toggle-password"
+                      data-target="confirm-password"
+                    >
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                        ></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="address"
+                  >Address <span class="optional">(optional)</span></label
+                >
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  placeholder="Street, City, ZIP Code"
+                />
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button type="submit" class="primary-btn">Sign Up</button>
+              <button type="reset" class="secondary-btn">Reset All</button>
+            </div>
+
+            <div class="text-center">
+              Already have an account? <a href="login.html">Log in</a>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-    
+
     <footer>
-        <div class="footer-content">
-            <p>lunessaservices@gmail.com</p>
-            <p class="copyright">&copy; 2025 Lunessa. All rights reserved.</p>
-        </div>
+      <div class="footer-content">
+        <p>lunessaservices@gmail.com</p>
+        <p class="copyright">&copy; 2025 Lunessa. All rights reserved.</p>
+      </div>
     </footer>
-</body>
+
+    <script>
+      (function () {
+        const canvas = document.getElementById("waveCanvas");
+        const ctx = canvas.getContext("2d");
+        let width, height, centerY;
+        const dpr = window.devicePixelRatio || 1;
+
+        function resize() {
+          width = canvas.offsetWidth;
+          height = canvas.offsetHeight;
+          centerY = height / 2;
+          canvas.width = width * dpr;
+          canvas.height = height * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        window.addEventListener("resize", resize);
+        resize();
+
+        let t = 0;
+        function drawWave(color, phase, invert = 1, alpha = 0.5) {
+          ctx.beginPath();
+          ctx.moveTo(0, height);
+          const frequency = 2;
+          for (let x = 0; x <= width; x++) {
+            const progress = x / width;
+            const amplitude =
+              Math.sin(progress * frequency * Math.PI + t) * 20 * invert;
+            const y =
+              centerY +
+              amplitude *
+                Math.sin(progress * frequency * 2 * Math.PI + t + phase);
+            ctx.lineTo(x, y);
+          }
+          ctx.lineTo(width, height);
+          ctx.closePath();
+          ctx.fillStyle = color;
+          ctx.globalAlpha = alpha;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+
+        function draw() {
+          ctx.clearRect(0, 0, width, height);
+          drawWave("rgba(139,92,246,1)", 0, 1, 0.6);
+          drawWave("rgba(139,92,246,0.7)", Math.PI, -1, 0.5);
+          t += 0.003; // slower wave speed
+          requestAnimationFrame(draw);
+        }
+        draw();
+      })();
+      const countries = [
+        { code: "US", name: "United States", dialCode: "+1", flag: "🇺🇸" },
+        { code: "GB", name: "United Kingdom", dialCode: "+44", flag: "🇬🇧" },
+        { code: "CA", name: "Canada", dialCode: "+1", flag: "🇨🇦" },
+        { code: "AU", name: "Australia", dialCode: "+61", flag: "🇦🇺" },
+        { code: "IN", name: "India", dialCode: "+91", flag: "🇮🇳" },
+        { code: "DE", name: "Germany", dialCode: "+49", flag: "🇩🇪" },
+        { code: "FR", name: "France", dialCode: "+33", flag: "🇫🇷" },
+        { code: "JP", name: "Japan", dialCode: "+81", flag: "🇯🇵" },
+        { code: "BR", name: "Brazil", dialCode: "+55", flag: "🇧🇷" },
+        { code: "ZA", name: "South Africa", dialCode: "+27", flag: "🇿🇦" },
+        { code: "CN", name: "China", dialCode: "+86", flag: "🇨🇳" },
+        { code: "RU", name: "Russia", dialCode: "+7", flag: "🇷🇺" },
+        { code: "MX", name: "Mexico", dialCode: "+52", flag: "🇲🇽" },
+        { code: "IT", name: "Italy", dialCode: "+39", flag: "🇮🇹" },
+        { code: "ES", name: "Spain", dialCode: "+34", flag: "🇪🇸" },
+        { code: "KR", name: "South Korea", dialCode: "+82", flag: "🇰🇷" },
+        { code: "SG", name: "Singapore", dialCode: "+65", flag: "🇸🇬" },
+        { code: "NL", name: "Netherlands", dialCode: "+31", flag: "🇳🇱" },
+        { code: "SE", name: "Sweden", dialCode: "+46", flag: "🇸🇪" },
+        { code: "CH", name: "Switzerland", dialCode: "+41", flag: "🇨🇭" },
+        {
+          code: "AE",
+          name: "United Arab Emirates",
+          dialCode: "+971",
+          flag: "🇦🇪",
+        },
+        { code: "SA", name: "Saudi Arabia", dialCode: "+966", flag: "🇸🇦" },
+        { code: "EG", name: "Egypt", dialCode: "+20", flag: "🇪🇬" },
+        { code: "NG", name: "Nigeria", dialCode: "+234", flag: "🇳🇬" },
+        { code: "KE", name: "Kenya", dialCode: "+254", flag: "🇰🇪" },
+        { code: "AR", name: "Argentina", dialCode: "+54", flag: "🇦🇷" },
+        { code: "CL", name: "Chile", dialCode: "+56", flag: "🇨🇱" },
+        { code: "CO", name: "Colombia", dialCode: "+57", flag: "🇨🇴" },
+        { code: "ID", name: "Indonesia", dialCode: "+62", flag: "🇮🇩" },
+        { code: "MY", name: "Malaysia", dialCode: "+60", flag: "🇲🇾" },
+        { code: "PH", name: "Philippines", dialCode: "+63", flag: "🇵🇭" },
+        { code: "TH", name: "Thailand", dialCode: "+66", flag: "🇹🇭" },
+        { code: "TR", name: "Turkey", dialCode: "+90", flag: "🇹🇷" },
+        { code: "VN", name: "Vietnam", dialCode: "+84", flag: "🇻🇳" },
+        { code: "BD", name: "Bangladesh", dialCode: "+880", flag: "🇧🇩" },
+        { code: "PK", name: "Pakistan", dialCode: "+92", flag: "🇵🇰" },
+        { code: "LK", name: "Sri Lanka", dialCode: "+94", flag: "🇱🇰" },
+        { code: "NP", name: "Nepal", dialCode: "+977", flag: "🇳🇵" },
+        { code: "IR", name: "Iran", dialCode: "+98", flag: "🇮🇷" },
+        { code: "IQ", name: "Iraq", dialCode: "+964", flag: "🇮🇶" },
+        { code: "IL", name: "Israel", dialCode: "+972", flag: "🇮🇱" },
+        { code: "JO", name: "Jordan", dialCode: "+962", flag: "🇯🇴" },
+        { code: "KW", name: "Kuwait", dialCode: "+965", flag: "🇰🇼" },
+        { code: "LB", name: "Lebanon", dialCode: "+961", flag: "🇱🇧" },
+        { code: "OM", name: "Oman", dialCode: "+968", flag: "🇴🇲" },
+        { code: "QA", name: "Qatar", dialCode: "+974", flag: "🇶🇦" },
+        { code: "SY", name: "Syria", dialCode: "+963", flag: "🇸🇾" },
+        { code: "YE", name: "Yemen", dialCode: "+967", flag: "🇾🇪" },
+      ];
+
+      // DOM elements
+      const countryList = document.getElementById("country-list");
+      const countrySearch = document.getElementById("country-search");
+      const countryCodeToggle = document.querySelector(".country-code-toggle");
+      const countryDropdown = document.querySelector(".country-code-dropdown");
+      const selectedCountryFlag = document.getElementById(
+        "selected-country-flag"
+      );
+      const selectedCountryCode = document.getElementById(
+        "selected-country-code"
+      );
+      const phoneInput = document.getElementById("phone");
+
+      // Populate country list
+      function populateCountryList(filter = "") {
+        countryList.innerHTML = "";
+        const filteredCountries = filter
+          ? countries.filter(
+              (country) =>
+                country.name.toLowerCase().includes(filter.toLowerCase()) ||
+                country.dialCode.includes(filter) ||
+                country.code.toLowerCase().includes(filter.toLowerCase())
+            )
+          : countries;
+
+        if (filteredCountries.length === 0) {
+          const li = document.createElement("li");
+          li.className = "country-item";
+          li.textContent = "No countries found";
+          countryList.appendChild(li);
+          return;
+        }
+
+        filteredCountries.forEach((country) => {
+          const li = document.createElement("li");
+          li.className = "country-item";
+          li.innerHTML = `
+                    <span class="country-flag">${country.flag}</span>
+                    <span class="country-name">${country.name}</span>
+                    <span class="country-code">${country.dialCode}</span>
+                `;
+          li.addEventListener("click", () => {
+            selectedCountryFlag.textContent = country.flag;
+            selectedCountryCode.textContent = country.dialCode;
+            countryDropdown.classList.remove("show");
+
+            // Update phone placeholder based on country
+            if (country.code === "US" || country.code === "CA") {
+              phoneInput.placeholder = "(123) 456-7890";
+            } else if (country.code === "GB") {
+              phoneInput.placeholder = "01234 567890";
+            } else if (country.code === "AU") {
+              phoneInput.placeholder = "0412 345 678";
+            } else if (country.code === "IN") {
+              phoneInput.placeholder = "12345 67890";
+            } else {
+              phoneInput.placeholder = "123 456 7890";
+            }
+          });
+          countryList.appendChild(li);
+        });
+      }
+
+      // Initialize country list
+      populateCountryList();
+
+      // Toggle dropdown
+      countryCodeToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        countryDropdown.classList.toggle("show");
+        if (countryDropdown.classList.contains("show")) {
+          countrySearch.focus();
+          // Scroll to top when dropdown opens
+          countryList.scrollTo(0, 0);
+        }
+      });
+
+      // Search functionality
+      countrySearch.addEventListener("input", (e) => {
+        populateCountryList(e.target.value);
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", () => {
+        countryDropdown.classList.remove("show");
+      });
+
+      // Prevent dropdown close when clicking inside
+      countryDropdown.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+
+      // Format phone numbers
+      phoneInput.addEventListener("input", function (e) {
+        if (selectedCountryCode.textContent === "+1") {
+          // Format for US/Canada numbers: (123) 456-7890
+          const x = this.value
+            .replace(/\D/g, "")
+            .match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+          this.value = !x[2]
+            ? x[1]
+            : "(" + x[1] + ") " + x[2] + (x[3] ? "-" + x[3] : "");
+        }
+      });
+
+      // Nationality Selector Functionality
+      const nationalityList = document.getElementById("nationality-list");
+      const nationalitySearch = document.getElementById("nationality-search");
+      const nationalityToggle = document.getElementById("nationality-toggle");
+      const nationalityDropdown = document.getElementById(
+        "nationality-dropdown"
+      );
+      const selectedNationalityFlag = document.getElementById(
+        "selected-nationality-flag"
+      );
+      const selectedNationalityName = document.getElementById(
+        "selected-nationality-name"
+      );
+      const nationalityHiddenInput = document.getElementById("nationality");
+
+      // Populate nationality list
+      function populateNationalityList(filter = "") {
+        nationalityList.innerHTML = "";
+        const filteredCountries = filter
+          ? countries.filter(
+              (country) =>
+                country.name.toLowerCase().includes(filter.toLowerCase()) ||
+                country.code.toLowerCase().includes(filter.toLowerCase())
+            )
+          : countries;
+
+        if (filteredCountries.length === 0) {
+          const li = document.createElement("li");
+          li.className = "nationality-item";
+          li.textContent = "No countries found";
+          nationalityList.appendChild(li);
+          return;
+        }
+
+        filteredCountries.forEach((country) => {
+          const li = document.createElement("li");
+          li.className = "nationality-item";
+          li.innerHTML = `
+                    <span class="nationality-flag">${country.flag}</span>
+                    <span class="nationality-name">${country.name}</span>
+                `;
+          li.addEventListener("click", () => {
+            selectedNationalityFlag.textContent = country.flag;
+            selectedNationalityName.textContent = country.name;
+            nationalityHiddenInput.value = country.code;
+            nationalityDropdown.classList.remove("show");
+          });
+          nationalityList.appendChild(li);
+        });
+      }
+
+      // Initialize nationality list
+      populateNationalityList();
+
+      // Toggle dropdown
+      nationalityToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        nationalityDropdown.classList.toggle("show");
+        if (nationalityDropdown.classList.contains("show")) {
+          nationalitySearch.focus();
+          // Scroll to top when dropdown opens
+          nationalityList.scrollTo(0, 0);
+        }
+      });
+
+      // Search functionality
+      nationalitySearch.addEventListener("input", (e) => {
+        populateNationalityList(e.target.value);
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", () => {
+        nationalityDropdown.classList.remove("show");
+      });
+
+      // Prevent dropdown close when clicking inside
+      nationalityDropdown.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+      // Format phone numbers and allow only numbers
+      phoneInput.addEventListener("input", function (e) {
+        // Remove all non-digit characters
+        this.value = this.value.replace(/\D/g, "");
+
+        // Apply formatting based on country code
+        if (selectedCountryCode.textContent === "+1") {
+          // Format for US/Canada numbers: (123) 456-7890
+          const x = this.value.match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+          this.value = !x[2]
+            ? x[1]
+            : "(" + x[1] + ") " + x[2] + (x[3] ? "-" + x[3] : "");
+        } else if (selectedCountryCode.textContent === "+91") {
+          // Format for India: 12345 67890
+          const x = this.value.match(/(\d{0,5})(\d{0,5})/);
+          this.value = x[1] + (x[2] ? " " + x[2] : "");
+        } else if (selectedCountryCode.textContent === "+44") {
+          // Format for UK: 01234 567890
+          const x = this.value.match(/(\d{0,5})(\d{0,6})/);
+          this.value = x[1] + (x[2] ? " " + x[2] : "");
+        } else {
+          // Default format: 123 456 7890
+          const x = this.value.match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+          this.value =
+            x[1] + (x[2] ? " " + x[2] : "") + (x[3] ? " " + x[3] : "");
+        }
+      });
+
+      // Prevent paste of non-numeric characters
+      phoneInput.addEventListener("paste", function (e) {
+        e.preventDefault();
+        const pasteData = e.clipboardData
+          .getData("text/plain")
+          .replace(/\D/g, "");
+        document.execCommand("insertText", false, pasteData);
+      });
+
+      // Password visibility toggle functionality
+      document.querySelectorAll(".toggle-password").forEach((button) => {
+        button.addEventListener("click", function () {
+          const targetId = this.getAttribute("data-target");
+          const input = document.getElementById(targetId);
+          const icon = this.querySelector("svg");
+
+          if (input.type === "password") {
+            input.type = "text";
+            icon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+          } else {
+            input.type = "password";
+            icon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+          }
+        });
+      });
+
+      // Copy password functionality (only for main password field)
+      document
+        .querySelector(".copy-password")
+        .addEventListener("click", function () {
+          const targetId = this.getAttribute("data-target");
+          const input = document.getElementById(targetId);
+
+          // Select the text
+          input.select();
+          input.setSelectionRange(0, 99999); // For mobile devices
+
+          // Copy the text
+          document.execCommand("copy");
+
+          // Change icon temporarily to indicate copy
+          const icon = this.querySelector("svg");
+          const originalHTML = icon.innerHTML;
+          icon.innerHTML = `<path d="M20 6L9 17l-5-5"/>`;
+
+          // Reset icon after 1.5 seconds
+          setTimeout(() => {
+            icon.innerHTML = originalHTML;
+          }, 1500);
+        });
+    </script>
+  </body>
 </html>
